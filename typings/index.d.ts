@@ -141,6 +141,11 @@ export interface ClientEvents {
 
 export type If<T extends boolean, A, B = null> = T extends true ? A : T extends false ? B : A | B
 
+export interface API {
+    /** Use to instance a new Thread and do actions such as sending messages. */
+    getThreadInfo: (threadId: string) => any;
+}
+
 export class Client<Ready extends boolean = boolean> extends EventEmitter {
     constructor(options?: ClientOptions)
     public friends: If<Ready, FriendUserManager>
@@ -150,7 +155,7 @@ export class Client<Ready extends boolean = boolean> extends EventEmitter {
     public options?: ClientOptions
     public get readyAt(): If<Ready, Date>
     public get uptime(): If<Ready, number>
-    private api?: any
+    public api: API | null
 
     public once<K extends keyof ClientEvents>(eventName: K, listener: (...args: ClientEvents[K]) => any): this
     public on<K extends keyof ClientEvents>(eventName: K, listener: (...args: ClientEvents[K]) => any): this
